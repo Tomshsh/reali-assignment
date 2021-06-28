@@ -16,7 +16,7 @@ export class EditorResolver implements Resolve<Customer> {
   constructor(private cs: CustomersService, private router: Router){}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Customer {
-    const id = state.url.split('/')[2]
+    const id = route.paramMap.get('id')
 
     if(id) return this.cs.getCustomer(id)
 

@@ -9,6 +9,6 @@ export class AppComponent {
   title = 'reali-applications';
   linkTabs = [
     {title: 'Dashboard', routerLink: ['dashboard']},
-    {title: "Add", routerLink:['edit']}
+    {title: "Add", routerLink:['edit/add']}
   ]
 }

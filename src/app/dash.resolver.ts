@@ -19,7 +19,7 @@ export class DashResolver implements Resolve<Customer[] | boolean> {
     if (this.cs.getCustomers().length) {
       return of(this.cs.getCustomers())
     }
-    this.router.navigate(['edit'])
+    this.router.navigate(['edit/add'])
     return of(false)
   }
 }

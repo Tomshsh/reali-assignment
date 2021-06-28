@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRouteSnapshot, RouterLink } from '@angular/router';
+import { filter } from 'rxjs/operators'
+import { ActivatedRoute, ActivatedRouteSnapshot, NavigationEnd, Router, RouterLink } from '@angular/router';
 
-interface LinkTab{
+interface LinkTab {
   title: string
   routerLink: string[],
 }
@@ -17,12 +18,20 @@ export class HeaderComponent implements OnInit {
   @Input() linkTabs!: LinkTab[]
   activeTab!: string
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
+    this.router.events.pipe(
+      filter(e => (e instanceof NavigationEnd))
+    ).subscribe(e => {
+      if (e instanceof NavigationEnd) {
+        const path = e.url.split("/")[1]
+        this.activeTab = this.linkTabs.find(l => l.routerLink.toString().includes(path))?.title || ""
+      }
+    })
   }
 
-  activateTab(tab: LinkTab){
+  activateTab(tab: LinkTab) {
     this.activeTab = tab.title
   }
 

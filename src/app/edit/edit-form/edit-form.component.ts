@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Customer } from 'src/app/Customer';
 import { CustomersService } from 'src/app/services/customers/customers.service';
 
@@ -14,13 +14,13 @@ export class EditFormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private cs: CustomersService
+    private cs: CustomersService,
+    private router: Router
   ) { }
 
   formGroup!: FormGroup
   @Output() formSubmit: EventEmitter<Customer> = new EventEmitter();
   customer!: Customer
-  controls: any = []
 
   ngOnInit(): void {
 
@@ -29,9 +29,12 @@ export class EditFormComponent implements OnInit {
       (data) => {
         const customer: Customer = data.customer
         this.customer = customer
-        this.formGroup = this.fb.group(this.customer)
-        this.controls = Object.keys(this.customer).map(c => {
-          return ({ name: c })
+        this.formGroup = this.fb.group({
+          firstName: [customer.firstName],
+          lastName: [customer.lastName],
+          phone: [customer.phone],
+          age: [customer.age],
+          address: [customer.address]
         })
       }
     )
@@ -40,6 +43,8 @@ export class EditFormComponent implements OnInit {
 
   onSubmit() {
     this.cs.addNew(this.formGroup.value)
+    this.formGroup.clearAsyncValidators
+    this.router.navigate(["../dashboard"])
   }
 
 }
