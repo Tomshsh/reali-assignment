@@ -1,0 +1,9 @@
+<form [formGroup]="formGroup" (ngSubmit)="onSubmit()" #f="ngForm" *ngIf="formGroup">
+  <div class="fields">
+    <mat-form-field appearance="fill" *ngFor="let control of controls">
+      <mat-label>{{control.name}}</mat-label>
+      <input matInput type="text" [formControlName]="control.name" required type="text">
+    </mat-form-field>
+  </div>
+  <button mat-raised-button [disabled]="formGroup.invalid" type="submit" color="primary" *ngIf="formGroup">SAVE</button>
+</form>

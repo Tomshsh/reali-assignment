@@ -1,0 +1,16 @@
+:host {
+  height: 100%;
+  width: 100%;
+}
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 10%;
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
