@@ -42,8 +42,9 @@ export class EditFormComponent implements OnInit {
   }
 
   onSubmit() {
-    this.cs.addNew(this.formGroup.value)
-    this.formGroup.clearAsyncValidators
+    if (this.customer.phone) { this.cs.edit(this.customer.phone, this.formGroup.value) }
+    else { this.cs.addNew(this.formGroup.value) }
+
     this.router.navigate(["../dashboard"])
   }
 

@@ -2,6 +2,6 @@
   <h2>{{title}}</h2>
   <span class="spacer"></span>
   <nav mat-tab-nav-bar>
-    <a mat-tab-link *ngFor="let linkTab of linkTabs" [routerLink]="linkTab.routerLink" [active]="activeTab == linkTab.title" (click)="activateTab(linkTab)" >{{linkTab.title}}</a>
+    <a mat-tab-link *ngFor="let linkTab of linkTabs" [routerLink]="linkTab.routerLink" [active]="activeTab == linkTab.title" >{{linkTab.title}}</a>
   </nav>
 </mat-toolbar>
