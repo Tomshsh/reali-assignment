@@ -9,6 +9,8 @@ import { NavbarComponent } from './navbar/navbar.component';
 import {MatToolbarModule} from '@angular/material/toolbar'
 import {MatTabsModule} from '@angular/material/tabs';
 import { UiModule } from './ui/ui.module';
+import { StoreModule } from '@ngrx/store';
+import { customerReducer } from './state/customers.reducer';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,8 @@ import { UiModule } from './ui/ui.module';
     BrowserAnimationsModule,
     MatToolbarModule,
     MatTabsModule,
-    UiModule
+    UiModule,
+    StoreModule.forRoot({customers: customerReducer})
   ],
   providers: [],
   bootstrap: [AppComponent]

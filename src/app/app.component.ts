@@ -6,6 +6,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+
+  constructor(){}
+
+
   title = 'reali-applications';
   linkTabs = [
     {title: 'Dashboard', routerLink: ['dashboard']},

@@ -32,7 +32,6 @@ export class HeaderComponent implements OnInit {
   }
 
   activateTab(tab: LinkTab) {
-    this.activeTab = tab.title
   }
 
 }

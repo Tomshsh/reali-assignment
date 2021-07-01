@@ -14,6 +14,7 @@ const routes: Routes = [
     children: [
       { path: 'add', component: EditFormComponent, resolve: { customer: EditorResolver } },
       { path: ":id", component: EditFormComponent, resolve: { customer: EditorResolver } },
+      { path: "", redirectTo: 'add' }
     ]
   }
 ]
