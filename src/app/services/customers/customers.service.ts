@@ -1,43 +1,37 @@
 import { Injectable } from '@angular/core';
 import { Customer } from 'src/app/Customer';
+import { Store, select } from '@ngrx/store'
+import { addCustomer, editCustomer, removeCustomer } from '../../state/customer.actions'
+import { selectCustomerByPhone, selectCustomers } from '../../state/customer.selectors'
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { AppState } from 'src/app/state/app.state';
+import { take, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CustomersService {
 
-  private customers: Customer[] = [{
-    address:"sdjfb",
-    age:38,
-    firstName:"dshbf",
-    lastName:"jb",
-    phone:"ljfdhkj"
-  }]
+  private _customers$ = new BehaviorSubject<Customer[]>([])
+  public customers$ = this._customers$.asObservable()
 
-  constructor() { }
-
-  getCustomers() {
-    return this.customers
+  constructor(private store: Store<AppState>) {
+    this.store.pipe(select(selectCustomers)).subscribe(c => {this._customers$.next(c)})
   }
 
-  getCustomer(phone: string){
-    const index = this.customers.findIndex(c => c.phone == phone)
-    return this.customers[index]
+  getCustomer(phone: string) {
+    return this.store.pipe(take(1), select(selectCustomerByPhone({ phone })))
   }
 
   addNew(customer: Customer) {
-    this.customers.push(customer)
+    this.store.dispatch(addCustomer({ customer }))
   }
 
   edit(phone: string, newCustomer: Customer) {
-    const index = this.customers.findIndex(c => c.phone == phone)
-    this.customers[index] = newCustomer
-    return this.customers
+    this.store.dispatch(editCustomer({ phone, newCustomer }))
   }
 
   delete(phone: string) {
-    const index = this.customers.findIndex(c => c.phone == phone)
-    this.customers.splice(index, 1)
-    return this.customers
+    this.store.dispatch(removeCustomer({ phone }))
   }
 }

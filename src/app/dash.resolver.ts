@@ -4,22 +4,25 @@ import {
   RouterStateSnapshot,
   ActivatedRouteSnapshot
 } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { Customer } from './Customer';
+import {  Observable } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 import { CustomersService } from './services/customers/customers.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DashResolver implements Resolve<Customer[] | boolean> {
+export class DashResolver {
 
   constructor(private cs: CustomersService, private router: Router) { }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Customer[] | boolean> {
-    if (this.cs.getCustomers().length) {
-      return of(this.cs.getCustomers())
-    }
-    this.router.navigate(['edit'])
-    return of(false)
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+    return this.cs.customers$.pipe(
+      take(1),
+      map(customers => {
+        if (customers.length) { return true }
+        this.router.navigate(['../edit/add'])
+        return false
+      })
+    )
   }
 }

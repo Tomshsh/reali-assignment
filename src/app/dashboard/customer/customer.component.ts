@@ -14,7 +14,6 @@ export class CustomerComponent implements OnInit {
   @Input() customer!: Customer
 
   ngOnInit(): void {
-    console.log(this.customer)
   }
 
   deleteCustomer(){

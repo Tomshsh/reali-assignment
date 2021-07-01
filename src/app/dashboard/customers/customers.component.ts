@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import {map} from 'rxjs/operators'
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Observable, ReplaySubject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { Customer } from 'src/app/Customer';
 import { CustomersService } from 'src/app/services/customers/customers.service';
 
@@ -10,21 +10,26 @@ import { CustomersService } from 'src/app/services/customers/customers.service';
   templateUrl: './customers.component.html',
   styleUrls: ['./customers.component.scss']
 })
-export class CustomersComponent implements OnInit {
+export class CustomersComponent implements OnInit, OnDestroy {
+  destroy$ = new ReplaySubject<boolean>(1)
 
   constructor(
     private cs: CustomersService,
-    private route: ActivatedRoute
+    private router: Router
   ) { }
 
   customers$!: Observable<Customer[]>
 
   ngOnInit(): void {
-    this.customers$ = this.route.data.pipe(
-      map(data => {
-      const customers: Customer[] = data.customers
-      return customers
-    }))
+    this.customers$ = this.cs.customers$
+
+    this.customers$.pipe(takeUntil(this.destroy$))
+      .subscribe(customers => {if(!customers.length) this.router.navigate(['../edit/add'])})
+  }
+
+  ngOnDestroy(){
+    this.destroy$.next(true)
+    this.destroy$.complete()
   }
 
 }
